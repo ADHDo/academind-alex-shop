@@ -3,7 +3,12 @@ import 'package:provider/provider.dart';
 
 import './screens/product_detail_screen.dart';
 import './screens/products_overview_screen.dart';
-import './providers/products_provider.dart';
+import './screens/cart_screen.dart';
+import './screens/orders_screen.dart';
+
+import 'providers/cart.dart';
+import 'providers/products.dart';
+import 'providers/orders.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,8 +18,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => ProductsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Orders(),
+        )
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -23,7 +38,11 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato',
         ),
         home: MyHomePage(title: 'Flutter Demo Home Page'),
-        routes: {ProductDetailScreen.routeName: (_) => ProductDetailScreen()},
+        routes: {
+          ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
+          CartScreen.routeName: (_) => CartScreen(),
+          OrdersScreen.routeName: (_) => OrdersScreen(),
+        },
       ),
     );
   }
